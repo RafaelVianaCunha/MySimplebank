@@ -31,4 +31,9 @@ test:
 	go test -v -cover ./...
 	echo "Tests done."
 
+server:
+	echo "Running server..."
+	go run main.go
+	echo "Server done."
+
 .PHONY: createdb dropdb postgres migrateup migratedown sqlc
