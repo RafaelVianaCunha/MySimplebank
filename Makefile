@@ -36,4 +36,9 @@ server:
 	go run main.go
 	echo "Server done."
 
-.PHONY: createdb dropdb postgres migrateup migratedown sqlc
+mock:
+	echo "Generating mocks..."
+	mockgen -build_flags=--mod=mod -package mockdb -destination db/mock/store.go github.com/rafaelvianacunha/simplebank/db/sqlc Store
+	echo "Mocks generated."
+
+.PHONY: createdb dropdb postgres migrateup migratedown sqlc test server mock
