@@ -39,3 +39,7 @@ func RandomCurrency() string {
 func RandomEmail() string {
 	return RandomString(6) + "@" + RandomString(6) + ".com"
 }
+
+func RandomTime() time.Time {
+	return time.Unix(RandomInt(0, time.Now().Unix()), 0)
+}
