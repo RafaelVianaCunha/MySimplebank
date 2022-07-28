@@ -7,7 +7,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 
 # This program built for i386-apple-darwin11.3.0
 
-# Make data base, printed on Mon Jul 25 19:29:36 2022
+# Make data base, printed on Wed Jul 27 09:11:36 2022
 
 # Variables
 
@@ -50,7 +50,7 @@ THREE_SCALE_USER_TOKEN = 207c527cfc2a6b8dcf4fa43ad7a976da
 # environment
 GOPATH = /Users/rafael.cunha/go
 # environment
-LaunchInstanceID = 95139971-90F5-4275-91D8-25B1642A2020
+LaunchInstanceID = FE393307-B762-44D3-9515-D2C2D51741E6
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # default
@@ -58,7 +58,7 @@ ELECTRON_RUN_AS_NODE = 1
 # environment
 UUID = 71a6bc33-ee0b-4895-a1ae-3a8f87002866
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.X19e35BM97/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.vfGZR24PZ4/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
@@ -97,6 +97,8 @@ MAKE_VERSION := 3.81
 USER = rafael.cunha
 # makefile
 .DEFAULT_GOAL := postgres
+# makefile (from `Makefile', line 1)
+DB_URL = postgresql://root:root@localhost:5432/simple_bank?sslmode=disable
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
@@ -148,9 +150,9 @@ MAKELEVEL := 0
 # environment
 LANG = C
 # environment
-VSCODE_PID = 635
+VSCODE_PID = 641
 # variable set hash-table stats:
-# Load=69/1024=7%, Rehash=0, Collisions=3/92=3%
+# Load=70/1024=7%, Rehash=0, Collisions=3/93=3%
 
 # Pattern-specific Variable Values
 
@@ -173,7 +175,7 @@ postgres:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 2):
+#  commands to execute (from `Makefile', line 4):
 	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -d postgres:12-alpine
 	
 
@@ -186,6 +188,14 @@ all:
 # variable set hash-table stats:
 # Load=0/32=0%, Rehash=0, Collisions=0/0=0%
 
+migratedown1:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 26):
+	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
+	
+
 .PHONY: createdb dropdb postgres migrateup migratedown sqlc test server mock
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -196,7 +206,7 @@ sqlc:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 25):
+#  commands to execute (from `Makefile', line 29):
 	echo "Running sqlc..."
 	sqlc generate
 	echo "Sqlc done."
@@ -211,7 +221,7 @@ sqlc:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-23 14:48:46
+#  Last modified 2022-07-25 19:56:48
 #  File has been updated.
 #  Successfully updated.
 # variable set hash-table stats:
@@ -222,7 +232,7 @@ server:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 35):
+#  commands to execute (from `Makefile', line 39):
 	echo "Running server..."
 	go run main.go
 	echo "Server done."
@@ -233,7 +243,7 @@ test:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 30):
+#  commands to execute (from `Makefile', line 34):
 	echo "Running tests..."
 	go test -v -cover ./...
 	echo "Tests done."
@@ -244,7 +254,7 @@ createdb:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 5):
+#  commands to execute (from `Makefile', line 7):
 	echo "Creating database..."
 	docker exec -i postgres12 createdb --username=root --owner=root simple_bank
 	echo "Database created."
@@ -261,7 +271,7 @@ dropdb:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 10):
+#  commands to execute (from `Makefile', line 12):
 	echo "Droping database..."
 	docker exec -i postgres12 dropdb simple_bank
 	echo "Database droped."
@@ -272,10 +282,16 @@ migrateup:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 15):
-	echo "Migrating up..."
-	migrate -path db/migration -database "postgresql://root:root@localhost:5432/simple_bank?sslmode=disable" -verbose up
-	echo "Migration up."
+#  commands to execute (from `Makefile', line 17):
+	migrate -path db/migration -database "$(DB_URL)" -verbose up
+	
+
+migrateup1:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 20):
+	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
 	
 
 migratedown:
@@ -283,10 +299,8 @@ migratedown:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 20):
-	echo "Migrating down..."
-	migrate -path db/migration -database "postgresql://root:root@localhost:5432/simple_bank?sslmode=disable" -verbose down
-	echo "Migration down."
+#  commands to execute (from `Makefile', line 23):
+	migrate -path db/migration -database "$(DB_URL)" -verbose down
 	
 
 mock:
@@ -294,14 +308,17 @@ mock:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
-#  commands to execute (from `Makefile', line 40):
+#  commands to execute (from `Makefile', line 44):
 	echo "Generating mocks..."
+ 
+make: *** No rule to make target `all'.  Stop.
+
 	mockgen -build_flags=--mod=mod -package mockdb -destination db/mock/store.go github.com/rafaelvianacunha/simplebank/db/sqlc Store
 	echo "Mocks generated."
 	
 
 # files hash-table stats:
-# Load=14/1024=1%, Rehash=0, Collisions=0/35=0%
+# Load=16/1024=2%, Rehash=0, Collisions=0/37=0%
 # VPATH Search Paths
 
 # No `vpath' search paths.
@@ -311,11 +328,8 @@ mock:
 # # of strings in strcache: 1
 # # of strcache buffers: 1
 # strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
- 
-make: *** No rule to make target `all'.  Stop.
-
 # strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
 
-# Finished Make data base on Mon Jul 25 19:29:36 2022
+# Finished Make data base on Wed Jul 27 09:11:36 2022
 
  
