@@ -169,11 +169,9 @@ func TestCreateUserAPI(t *testing.T) {
 func randomUser() (db.User, string) {
 	password := util.RandomString(10)
 	return db.User{
-			Username:          util.RandomString(10),
-			FullName:          util.RandomString(10),
-			Email:             util.RandomEmail(),
-			PasswordChangedAt: util.RandomTime(),
-			CreatedAt:         util.RandomTime(),
+			Username: util.RandomString(10),
+			FullName: util.RandomString(10),
+			Email:    util.RandomEmail(),
 		},
 		password
 }
