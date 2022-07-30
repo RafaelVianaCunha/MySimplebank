@@ -31,9 +31,7 @@ sqlc:
 	echo "Sqlc done."
 
 test:
-	echo "Running tests..."
 	go test -v -cover ./...
-	echo "Tests done."
 
 server:
 	echo "Running server..."
