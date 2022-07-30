@@ -1,3 +1,5 @@
+DB_URL=postgresql://root:root@localhost:5432/simple_bank?sslmode=disable
+
 postgres:
 	docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -d postgres:12-alpine
 
@@ -12,14 +14,16 @@ dropdb:
 	echo "Database droped."
 
 migrateup:
-	echo "Migrating up..."
-	migrate -path db/migration -database "postgresql://root:root@localhost:5432/simple_bank?sslmode=disable" -verbose up
-	echo "Migration up."
+	migrate -path db/migration -database "$(DB_URL)" -verbose up
+
+migrateup1:
+	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
 
 migratedown:
-	echo "Migrating down..."
-	migrate -path db/migration -database "postgresql://root:root@localhost:5432/simple_bank?sslmode=disable" -verbose down
-	echo "Migration down."
+	migrate -path db/migration -database "$(DB_URL)" -verbose down
+
+migratedown1:
+	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
 sqlc:
 	echo "Running sqlc..."
@@ -27,9 +31,7 @@ sqlc:
 	echo "Sqlc done."
 
 test:
-	echo "Running tests..."
 	go test -v -cover ./...
-	echo "Tests done."
 
 server:
 	echo "Running server..."
